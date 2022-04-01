@@ -1,20 +1,11 @@
 import React from 'react';
 import {useState, useEffect} from "react";
-import Axios from "axios";
 import { Link } from 'react-router-dom';
+import { useContext } from 'react';
+import DataContext from './dataContext/dataContext';
 
 const Main = () => {
-    const [datas, setData] = useState([]);
-    useEffect(() => {
-        const getElements = async () => {
-            const response = await Axios.get("http://localhost:3500/api/Users");
-            const data = response.data;
-            console.log(data);
-            setData(data);
-            }
-            getElements();
-    }, [])
-    console.log(datas);
+  const {datas, handleDelete} = useContext(DataContext);
   return (
     <main id="site-main">
         <div class="container">
@@ -32,7 +23,7 @@ const Main = () => {
                     <th>ID</th>
                     <th>Name</th>
                     <th>@Email</th>
-                    <th>GEnder</th>
+                    <th>Gender</th>
                     <th>Status</th>
                     <th>Action</th>
                 </tr>
@@ -47,10 +38,10 @@ const Main = () => {
                     <td>{data.gender}</td>
                     <td>{data.status}</td>
                     <td>
-                        <a href="/updateUser" class="btn border-shadow update">
+                        <Link to = {`/update/${data._id}`} class="btn border-shadow update">
                             <span class="text-gradient"><i class="fas fa-pencil-alt"></i></span>
-                        </a>
-                        <a href='#' class="btn border-shadow delete">
+                        </Link>
+                        <a href='#' class="btn border-shadow delete" onClick={() => handleDelete(data._id)}>
                             <span class="text-gradient"><i class="fas fa-times"></i></span>
                         </a>
                     </td>

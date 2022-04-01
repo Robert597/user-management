@@ -1,8 +1,9 @@
-import {useState, useEffect} from "react";
 import Header from "./header";
 import Main from "./main";
 import {Routes, Route} from "react-router-dom";
 import AddUser from "./addUser";
+import Update from "./updateUser";
+
 function App() {
  
   return (
@@ -10,7 +11,8 @@ function App() {
        <Header/>
       <Routes>
       <Route exact path='/' element={< Main />}></Route>
-<Route exact path='/adduser' element={< AddUser />}></Route>
+<Route path='/adduser' element={< AddUser />}></Route>
+<Route  path='/update/:id' element={< Update />}></Route>
       </Routes>
     </div>
   );
