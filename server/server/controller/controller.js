@@ -27,19 +27,26 @@ exports.find =  (req, res) => {
   Manager.find().then(data =>{return res.status(201).send(data)}).catch(err => {return res.status(500).send(err.message)})
 }
 //update a new identified user by userId
-exports.update = (req, res) => {
+exports.update = async (req, res) => {
      if(!req.body){
          return res.status(400).send({message: "Data cannot be empty"});
      }
      const id = req.params.id;
-     Manager.findByIdAndUpdate(id, req.body, {useFindAndModify: true}).then(data => {
-         if(!data){ return res.status(400).send({message: "cannot find id"})}
-         else{
-            return res.status(201).send(data);
-        }
-     }).catch(err => {
+     const origin = req.header('Origin');
+try{
+     const response = await Manager.findOne({_id: id})
+     if(req.body.name) {response.name = req.body.name}
+     if(req.body.email) {response.email = req.body.email}
+     if(req.body.status) {response.status = req.body.status}
+     if(req.body.gender) {response.gender = req.body.gender}
+     const result = await response.save();
+   return  res.status(201).send(result);
+    }
+     catch(err){
         return res.status(404).send(err.message)
-    })
+     }
+      
+  
 }
 
 //delete a user with specified userId
